@@ -48,7 +48,7 @@ class Played(db.Model):
 
     __tablename__ = 'played'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     match_id = db.Column(db.BigInteger, nullable=False)
     hero_id = db.Column(db.Integer, nullable=False)
 
