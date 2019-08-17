@@ -25,3 +25,33 @@ class Match(db.Model):
             'radiant_team': self.radiant_team,
             'dire_team': self.dire_team
         }
+
+class Hero(db.Model):
+
+    __tablename__ = 'heroes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+        }
+
+
+class Played(db.Model):
+
+    __tablename__ = 'played'
+
+    id = db.Column(db.Integer, primary_key=True)
+    match_id = db.Column(db.BigInteger, nullable=False)
+    hero_id = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, match_id, hero_id):
+        self.match_id = match_id
+        self.hero_id = hero_id
