@@ -2,11 +2,13 @@ import os
 from flask import Flask
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 
 
 # instantiate the db
 db = SQLAlchemy()
+cors = CORS()
 
 # Update project/__init__.py, removing the route and model
 # and adding the Application Factory pattern:
@@ -29,6 +31,7 @@ def create_app(script_info=None):
 
     # set up extensions
     db.init_app(app)
+    cors.init_app(app)
 
     #register blueprints
     from project.api.matches import matches_blueprint
