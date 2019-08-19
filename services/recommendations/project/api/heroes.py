@@ -23,4 +23,4 @@ class HeroList(Resource):
         return response_object, 200
 
 
-api.add_resource(HeroList, '/heroes')
+api.add_resource(HeroList, '/api/heroes')

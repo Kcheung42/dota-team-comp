@@ -78,6 +78,6 @@ class MatchesList(Resource):
         }
         return response_object, 200
 
-api.add_resource(MatchesPing, '/matches/ping')
-api.add_resource(MatchesList, '/matches')
-api.add_resource(Matches, '/matches/<match_id>')
+api.add_resource(MatchesPing, '/api/matches/ping')
+api.add_resource(MatchesList, '/api/matches')
+api.add_resource(Matches, '/api/matches/<match_id>')
