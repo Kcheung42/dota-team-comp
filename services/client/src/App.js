@@ -23,7 +23,7 @@ class App extends Component{
          .then(res => {this.setState({heroes: res.data.data.heroes});})
          .catch(err => {console.log(err);});
   };
-  
+
   /* getUsers() {
    *   axios.get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)
    *        .then((res) => { this.setState({ users: res.data.data.users }); })
