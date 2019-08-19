@@ -10,12 +10,37 @@ class App extends Component{
     this.state = {
       heroes: [],
       selected: [],
+      suggested: [],
     };
   };
 
   componentDidMount(){
     this.getHeroes();
     /* this.getUsers(); */
+  };
+
+  onClick = (e) => {
+    const selected = this.state.selected
+    var exists = (array, e) => {
+      return selected.reduce((acc, v) => {
+        if (v['id'] === e['id']){
+          return true
+        }else{
+          return acc
+        }
+      }, false)
+    }
+    if (selected.length < 5 && exists(selected, e) === false){
+      this.setState({selected: [...this.state.selected, e]})
+    }
+  };
+
+  onClickRemove = (e) => {
+    const selected = this.state.selected
+    console.log(selected.filter((hero) => hero.id === e['id']))
+    if (selected.length > 0) {
+      this.setState({selected: selected.filter((hero) => hero.id !== e['id'])})
+    }
   };
 
   getHeroes(){
@@ -33,7 +58,15 @@ class App extends Component{
   render(){
     return (
       <div className="App">
-        <HeroList heroes={this.state.heroes}/>
+        <h1>Selected</h1>
+        <HeroList heroes={this.state.selected}
+                  onClick={this.onClickRemove}/>
+        <h1>Heroes</h1>
+        <HeroList heroes={this.state.heroes}
+                  onClick={this.onClick}/>
+        <h1>Suggested</h1>
+        <HeroList heroes={this.state.suggested}
+                  onClick={this.onClick}/>
       </div>
     );
   }
