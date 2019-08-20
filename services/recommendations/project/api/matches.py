@@ -40,32 +40,38 @@ class Matches(Resource):
 
 
 class MatchesList(Resource):
-    def post(self):
-        post_data = request.get_json()
-        response_object = {
-            'status' : 'fail',
-           'message' : 'Invalid payload.'
-        }
-        if not post_data:
-            return response_object, 400
+    # def post(self):
+    #     post_data = request.get_json()
+    #     response_object = {
+    #         'status' : 'fail',
+    #        'message' : 'Invalid payload.'
+    #     }
+    #     if not post_data:
+    #         return response_object, 400
 
-        match_id = post_data.get('match_id')
-        try:
-            user = User.query.filter_by(email=email).first()
-            if not user:
-                ## add user
-                db.session.add(User(match_id=match_id ))
-                db.session.commit()
-                response_object['status'] = 'success'
-                response_object['message'] = f'Match {match_id} was added!'
-                return response_object, 201
-            else:
-                response_object['message'] = f'Sorry. That match already exists.'
-                return response_object, 400
-        except exc.IntegrityError:
-            db.session.rollback()
-            return response_object, 400
-        return response_object, 201
+    #     match_id = post_data.get('match_id')
+    #     try:
+    #         match = Match.query.filter_by(match_id=match_id).first()
+    #         if not match:
+    #             db.session.add(
+    #                 Match(
+    #                     match_id=d['match_id'],
+    #                     radiant_win=d['radiant_win'],
+    #                     radiant_team=d['radiant_team'],
+    #                     dire_team=d['dire_team']
+    #                     )
+    #             )
+    #             db.session.commit()
+    #             response_object['status'] = 'success'
+    #             response_object['message'] = f'Match {match_id} was added!'
+    #             return response_object, 201
+    #         else:
+    #             response_object['message'] = f'Sorry. That match already exists.'
+    #             return response_object, 400
+    #     except exc.IntegrityError:
+    #         db.session.rollback()
+    #         return response_object, 400
+    #     return response_object, 201
 
     def get(self):
         """Get all matches"""

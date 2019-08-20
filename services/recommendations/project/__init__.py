@@ -36,8 +36,10 @@ def create_app(script_info=None):
     #register blueprints
     from project.api.matches import matches_blueprint
     from project.api.heroes import heroes_blueprint
+    from project.api.recommendations import recommend_blueprint
     app.register_blueprint(matches_blueprint)
     app.register_blueprint(heroes_blueprint)
+    app.register_blueprint(recommend_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor

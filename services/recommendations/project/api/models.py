@@ -1,6 +1,14 @@
 from sqlalchemy.sql import func
 from project import db
 
+class MatchHero(db.Model):
+    __tablename__ = 'match_hero'
+    match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), primary_key=True)
+    hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), primary_key=True)
+    team = db.Column(db.String, nullable=False)
+    match = db.relationship("Match", backref=db.backref('heroes'))
+    hero = db.relationship("Hero", backref=db.backref('matches'))
+
 
 class Match(db.Model):
 
@@ -23,7 +31,7 @@ class Match(db.Model):
             'match_id': self.match_id,
             'radiant_win': self.radiant_win,
             'radiant_team': self.radiant_team,
-            'dire_team': self.dire_team
+            'dire_team': self.dire_team,
         }
 
 class Hero(db.Model):
@@ -42,16 +50,3 @@ class Hero(db.Model):
             'id': self.id,
             'name': self.name,
         }
-
-
-class Played(db.Model):
-
-    __tablename__ = 'played'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    match_id = db.Column(db.BigInteger, nullable=False)
-    hero_id = db.Column(db.Integer, nullable=False)
-
-    def __init__(self, match_id, hero_id):
-        self.match_id = match_id
-        self.hero_id = hero_id

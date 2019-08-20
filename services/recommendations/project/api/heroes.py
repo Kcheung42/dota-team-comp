@@ -4,10 +4,9 @@ from project import db
 from project.api.models import Hero
 from sqlalchemy import exc
 import json
-import requests
 
 
-heroes_blueprint = Blueprint('heroe', __name__)
+heroes_blueprint = Blueprint('heroes', __name__)
 api = Api(heroes_blueprint)
 
 class HeroList(Resource):
