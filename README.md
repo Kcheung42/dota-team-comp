@@ -10,7 +10,7 @@
 
 # Visit:
 ### Application
-* http://ec2-35-175-111-217.compute-1.amazonaws.com/users
+* http://ec2-35-175-111-217.compute-1.amazonaws.com/
 
 ### API
 * http://ec2-35-175-111-217.compute-1.amazonaws.com/users

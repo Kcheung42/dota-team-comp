@@ -32,7 +32,13 @@ class App extends Component{
     }
     if (selected.length < 5 && exists(selected, e) === false){
       this.setState({selected: [...this.state.selected, e]})
-    }
+      axios.get(process.env.REACT_APP_HEROES_SERVICE_URL + '/api/recommendations', {
+        params: {
+          ID: "1,2,3,4"
+        }
+      }).then(response => {this.setState({suggested: response.data.data.heroes});})
+        .catch(error => {console.log(error);})
+    };
   };
 
   onClickRemove = (e) => {

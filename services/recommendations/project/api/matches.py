@@ -4,7 +4,6 @@ from project import db
 from project.api.models import Match
 from sqlalchemy import exc
 import json
-import requests
 
 
 matches_blueprint = Blueprint('matches', __name__)
