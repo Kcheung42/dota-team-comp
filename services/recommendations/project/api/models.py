@@ -3,6 +3,7 @@ from project import db
 
 class MatchHero(db.Model):
     __tablename__ = 'match_hero'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), primary_key=True)
     hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), primary_key=True)
     team = db.Column(db.String, nullable=False)
@@ -50,3 +51,4 @@ class Hero(db.Model):
             'id': self.id,
             'name': self.name,
         }
+

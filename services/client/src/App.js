@@ -36,14 +36,14 @@ class App extends Component{
         params: {
           ID: "1,2,3,4"
         }
-      }).then(response => {this.setState({suggested: response.data.data.heroes});})
+      }).then(response => {
+        this.setState({suggested: response.data.data.heroes});})
         .catch(error => {console.log(error);})
     };
   };
 
   onClickRemove = (e) => {
     const selected = this.state.selected
-    console.log(selected.filter((hero) => hero.id === e['id']))
     if (selected.length > 0) {
       this.setState({selected: selected.filter((hero) => hero.id !== e['id'])})
     }

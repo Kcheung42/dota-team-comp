@@ -7,7 +7,7 @@ docker-build-dev:
 docker-up-background:
 	docker-compose -f docker-compose-prod.yml up -d
 
-docker-up-background-dev:
+docker-up-dev-background:
 	docker-compose -f docker-compose.yml up -d
 
 docker-up:
