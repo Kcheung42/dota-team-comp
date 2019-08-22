@@ -17,7 +17,7 @@ class Match(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     match_id = db.Column(db.BigInteger, nullable=False)
-    radiant_win = db.Column(db.Boolean, nullable=False)
+    radiant_win = db.Column(db.String, nullable=False)
     radiant_team = db.Column(db.String, nullable=False)
     dire_team = db.Column(db.String, nullable=False)
 

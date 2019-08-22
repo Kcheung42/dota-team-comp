@@ -38,12 +38,16 @@ def fetch_matches():
         # print("data:{}".format(data), flush=True)
         for d in data:
             match_id = d['match_id']
+            if d['radiant_win']:
+                winning_team = 'radiant'
+            else:
+                winning_team = 'dire'
             match = Match.query.filter_by(match_id=match_id).first()
             if not match:
                 db.session.add(
                     Match(
                         match_id=d['match_id'],
-                        radiant_win=d['radiant_win'],
+                        radiant_win=winning_team,
                         radiant_team=d['radiant_team'],
                         dire_team=d['dire_team']
                         )
