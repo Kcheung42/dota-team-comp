@@ -26,14 +26,30 @@ def test():
     sys.exit(result)
 
 
+import time
 # TODO Make calls dependent on the last
 @cli.command('seed_db')
 def seed_db():
     """Seeds to the database"""
+    start = time.time()
     fetch_heroes()
     fetch_matches()
+    end = time.time()
+    print(f'{end - start} seconds')
+
+@cli.command('combo')
+def calc_combinations():
+    start = time.time()
     store_compositions()
+    end = time.time()
+    print(f'{end - start} seconds')
+
+@cli.command('win_rates')
+def recalc_win_rates():
+    start = time.time()
     calc_win_rates()
+    end = time.time()
+    print(f'{end - start} seconds')
 
 
 if __name__ == '__main__':

@@ -37,7 +37,8 @@ class App extends Component{
           ID: "1,2,3,4"
         }
       }).then(response => {
-        this.setState({suggested: response.data.data.heroes});})
+        this.setState({suggested: response.data.data.heroes});
+      })
         .catch(error => {console.log(error);})
     };
   };

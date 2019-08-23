@@ -4,15 +4,19 @@ from project import db
 from sqlalchemy import or_, func, update
 
 
-def _find_matches_wins(heroes_id, win):
+def _find_matches_wins(heroes_id, is_winner):
+    """Given a list of hero ids and a win or lose boolean
+    find matches matching conditions:
+    1.All heroes on the same team
+    2.Game is a win or not
+    """
     clauses = [MatchHero.hero_id==i for i in heroes_id]
-    print(f'clauses:{clauses}')
     q = db.session.query(
         MatchHero.match_id,func.count(MatchHero.id)).\
         join(Match).\
         filter(or_(*clauses)).\
                     group_by(MatchHero.match_id, MatchHero.team).\
-                    filter(MatchHero.win==win).\
+                    filter(MatchHero.win==is_winner).\
                     having(func.count(MatchHero.id)==len(heroes_id))
     matches = list(map(lambda x: x[0], q))
     return matches
@@ -43,3 +47,6 @@ def calc_win_rates():
         t.lose_count = result['lose_count']
         db.session.commit()
 
+# Runnin Times
+# 1-20 Heroes Combinations: 1663 Combinations
+# 2792.7711927890778 seconds

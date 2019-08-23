@@ -21,15 +21,17 @@ class RecommendationsPing(Resource):
 
 class Recommendations(Resource):
 
+    # TODO To Remove
     def Rand(self, start, end, num):
         res = []
-        # random_v = random.sample(range(start, end), num)
-        random_v = range(1,5)
+        random_v = random.sample(range(start, end), num)
+        # random_v = range(1,5)
         for r in random_v:
             h = Hero.query.filter_by(id=r).first()
             res.append(h)
         return res
 
+    # TODO To Remove
     # WISH: dynamically construct queries as I could in functional
     # Programming
     def _find_matches_wins(self, heroes_id, win):
@@ -47,6 +49,7 @@ class Recommendations(Resource):
         matches = list(map(lambda x: x[0], q))
         return matches
 
+    # TODO To Remove
     def _calc_win_rate(self, heroes_id):
         winning_matches = self._find_matches_wins(heroes_id, True)
         losing_matches = self._find_matches_wins(heroes_id, False)
@@ -86,10 +89,11 @@ class Recommendations(Resource):
         # print(conn.execute(e_str).fetchall())
         # print("==================================================")
 
+        heroes = self.Rand(1, 100, 5)
         response_object = {
             'status' : 'success',
             'data' : {
-                'heroes' : [],
+                'heroes' : [h.to_json() for h in heroes],
                 'params' : heroes_id
             }
         }
@@ -99,6 +103,7 @@ class Recommendations(Resource):
 class RecommendationsWinRates(Resource):
     def get(self):
         win_rates = WinRates.query.order_by(WinRates.id).all()
+        win_rates = list(filter(lambda x: (x.win_count + x.lose_count) != 0, win_rates))
         response_object = {
             'status' : 'success',
             'data' : {
