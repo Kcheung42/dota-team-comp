@@ -1,5 +1,6 @@
 from sqlalchemy.sql import func
 from project import db
+from project.serializer import comp_deserialize
 
 class MatchHero(db.Model):
     __tablename__ = 'match_hero'
@@ -7,6 +8,7 @@ class MatchHero(db.Model):
     match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), primary_key=True)
     hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), primary_key=True)
     team = db.Column(db.String, nullable=False)
+    win = db.Column(db.Boolean, nullable=False)
     match = db.relationship("Match", backref=db.backref('heroes'))
     hero = db.relationship("Hero", backref=db.backref('matches'))
 
@@ -17,7 +19,7 @@ class Match(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     match_id = db.Column(db.BigInteger, nullable=False)
-    radiant_win = db.Column(db.String, nullable=False)
+    radiant_win = db.Column(db.Boolean, nullable=False)
     radiant_team = db.Column(db.String, nullable=False)
     dire_team = db.Column(db.String, nullable=False)
 
@@ -52,3 +54,20 @@ class Hero(db.Model):
             'name': self.name,
         }
 
+class WinRates(db.Model):
+    __tablename__ = 'win_rates'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    team = db.Column(db.BigInteger, nullable=False)
+    win_rate = db.Column(db.Float, nullable=False)
+
+
+    def __init__(self, team):
+        self.team = team
+        self.win_rate = 0
+
+    def to_json(self):
+        return {
+            'composition' : str(comp_deserialize(self.team)),
+            'win_rate' : self.win_rate
+        }

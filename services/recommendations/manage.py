@@ -1,6 +1,7 @@
 from flask.cli import FlaskGroup
 from project import create_app, db
 from project.openapi import *
+from project.combinations import store_compositions
 import sys
 import unittest
 
@@ -30,6 +31,7 @@ def seed_db():
     """Seeds to the database"""
     fetch_heroes()
     fetch_matches()
+    store_compositions()
 
 
 if __name__ == '__main__':

@@ -47,7 +47,7 @@ def fetch_matches():
                 db.session.add(
                     Match(
                         match_id=d['match_id'],
-                        radiant_win=winning_team,
+                        radiant_win=d['radiant_win'],
                         radiant_team=d['radiant_team'],
                         dire_team=d['dire_team']
                         )
@@ -58,19 +58,21 @@ def fetch_matches():
                 dire_team = [x.strip() for x in d['dire_team'].split(',')]
                 for hero in radiant_team:
                     hero = Hero.query.filter_by(id=hero).first()
-                    a = MatchHero(hero=hero, match=match, team='radiant')
+                    win = match.radiant_win
+                    a = MatchHero(hero=hero, match=match, team='radiant', win=win)
                     db.session.add(a)
                     db.session.commit()
                 for hero in dire_team:
                     hero = Hero.query.filter_by(id=hero).first()
-                    a = MatchHero(hero=hero, match=match, team='dire')
+                    win = False if match.radiant_win else True
+                    a = MatchHero(hero=hero, match=match, team='dire', win=win)
                     db.session.add(a)
                     db.session.commit()
-                for assoc in match.heroes:
-                    print(assoc.hero)
-                print ("direteam{}".format(dire_team))
-                print ("radiant{}".format(radiant_team))
-                print("match heroes:{}".format(match.heroes))
+                # for assoc in match.heroes:
+                #     print(assoc.hero)
+                # print ("direteam{}".format(dire_team))
+                # print ("radiant{}".format(radiant_team))
+                # print("match heroes:{}".format(match.heroes))
                 print("match:{} Successfully Added".format(match), flush=True)
 
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_restful import Resource, Api
 from project import db
-from project.api.models import Hero, Match, MatchHero
+from project.api.models import Hero, Match, MatchHero, WinRates
 import json
 import random
 from sqlalchemy import or_, func, create_engine
@@ -33,7 +33,6 @@ class Recommendations(Resource):
     # WISH: dynamically construct queries as I could in functional
     # Programming
     def _find_matches_wins(self, heroes_id, win):
-        # heroes_id = [h.id for h in heroes]
         clauses = [MatchHero.hero_id==i for i in heroes_id]
         print(f'clauses:{clauses}')
         q = db.session.query(
@@ -41,27 +40,31 @@ class Recommendations(Resource):
             join(Match).\
             filter(or_(*clauses)).\
                        group_by(MatchHero.match_id, MatchHero.team).\
-                       filter(Match.radiant_win==MatchHero.team).\
+                       filter(MatchHero.win==win).\
                        having(func.count(MatchHero.id)==2)
-        # if win = True:
-        #     q = q.filter(Match.radiant_win==MatchHero.team)
-        # else:
-        #     q = q.filter(match.radiant_win==)
-
 
         # print(f'q:{q}')
         matches = list(map(lambda x: x[0], q))
         return matches
 
+    def _calc_win_rate(self, heroes_id):
+        winning_matches = self._find_matches_wins(heroes_id, True)
+        losing_matches = self._find_matches_wins(heroes_id, False)
+        win_rate = len(winning_matches) / (len(winning_matches) + len(losing_matches))
+        return win_rate
+
     def get(self):
         heroes_id = request.args.get('ID').split(',')
         print("\nDEBUGGING **********************************")
 
-        winning_matches = self._find_matches_wins(heroes_id, False)
-        losing_matches = self._find_matches_wins(heroes_id, True)
+        winning_matches = self._find_matches_wins(heroes_id, True)
+        losing_matches = self._find_matches_wins(heroes_id, False)
+        win_rate = self._calc_win_rate(heroes_id)
 
         print(f'winning:{winning_matches}')
         print(f'Losing:{losing_matches}')
+        print(f'win_rate:{win_rate}')
+        "{0:b}".format(2**129|1)
 
         # print("==================================================")
         # engine = create_engine(os.environ['DATABASE_TEST_URL'])
@@ -81,7 +84,21 @@ class Recommendations(Resource):
         return response_object, 200
 
 
+class RecommendationsWinRates(Resource):
+    def get(self):
+        win_rates = WinRates.query.all()
+        response_object = {
+            'status' : 'success',
+            'data' : {
+                'count' : len(win_rates),
+                'win_rates' : [each.to_json() for each in win_rates],
+            }
+        }
+        return response_object, 200
+
+
 api.add_resource(Recommendations, '/api/recommendations')
+api.add_resource(RecommendationsWinRates, '/api/win_rates')
 api.add_resource(RecommendationsPing, '/api/ping')
 
 
