@@ -45,7 +45,7 @@ class Test(BaseTestCase):
             self.assertIn('pong!', data['message'])
             self.assertIn('success', data['status'])
 
-    def test_recommend(self):
+    def test_recommend_one_input(self):
         for i in range(1,11):
             add_hero(i, 'blahblahHero' + str(i))
         add_match('1', True , '1,2', '3,4') # on winning team
@@ -53,12 +53,22 @@ class Test(BaseTestCase):
         add_match('3', False, '3,5', '1,2') # on winning team
         add_match('4', True, '1,2', '5,3') # on winning team
         add_match('5', False, '1,2', '5,3') # on losing team
-        with self.client:
-            response = self.client.get('/api/recommendations?ID=1,2')
-            data = json.loads(response.data.decode())['data']
-            print(f'data:{data}')
-            self.assertEqual(data['heroes'], [])
-            self.assertEqual(data['params'], ['1', '2'])
+        add_match('6', True, '1,3,2', '5,3') # on winning team
+        def test_one_input(self):
+            with self.client:
+                response = self.client.get('/api/recommendations?ID=1')
+                data = json.loads(response.data.decode())['data']
+                print(f'data:{data}')
+                self.assertEqual(data['heroes'], [])
+                self.assertEqual(data['params'], ['1'])
+
+        def test_recommend_multipleinput(self):
+            with self.client:
+                response = self.client.get('/api/recommendations?ID=1,2')
+                data = json.loads(response.data.decode())['data']
+                print(f'data:{data}')
+                self.assertEqual(data['heroes'], [])
+                self.assertEqual(data['params'], ['1', '2'])
 
 
 if __name__ == '__main__':

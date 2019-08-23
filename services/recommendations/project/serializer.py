@@ -23,7 +23,7 @@ def comp_deserialize(n):
     team_ids = []
     while(n):
         if (n&1) == 1:
-            team_ids.append(pos)
+            team_ids.append(str(pos))
         n = n >> 1
         pos += 1
     return team_ids

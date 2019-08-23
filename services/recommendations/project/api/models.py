@@ -60,14 +60,20 @@ class WinRates(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     team = db.Column(db.BigInteger, nullable=False)
     win_rate = db.Column(db.Float, nullable=False)
+    win_count = db.Column(db.Integer, nullable=False)
+    lose_count = db.Column(db.Integer, nullable=False)
 
 
     def __init__(self, team):
         self.team = team
         self.win_rate = 0
+        self.win_count = 0
+        self.lose_count = 0
 
     def to_json(self):
         return {
             'composition' : str(comp_deserialize(self.team)),
-            'win_rate' : self.win_rate
+            'win_rate' : self.win_rate,
+            'win_count' : self.win_count,
+            'lose_count' : self.lose_count,
         }

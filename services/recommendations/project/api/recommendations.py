@@ -41,7 +41,7 @@ class Recommendations(Resource):
             filter(or_(*clauses)).\
                        group_by(MatchHero.match_id, MatchHero.team).\
                        filter(MatchHero.win==win).\
-                       having(func.count(MatchHero.id)==2)
+                       having(func.count(MatchHero.id)==len(heroes_id))
 
         # print(f'q:{q}')
         matches = list(map(lambda x: x[0], q))
@@ -50,16 +50,28 @@ class Recommendations(Resource):
     def _calc_win_rate(self, heroes_id):
         winning_matches = self._find_matches_wins(heroes_id, True)
         losing_matches = self._find_matches_wins(heroes_id, False)
-        win_rate = len(winning_matches) / (len(winning_matches) + len(losing_matches))
-        return win_rate
+        win_count = len(winning_matches)
+        lose_count = len(losing_matches)
+
+        result = dict()
+        result['win_count'] = win_count
+        result['lose_count'] = lose_count
+        result['win_rate'] = 0
+
+        if(win_count + lose_count > 0):
+            result['win_rate'] = win_count / (win_count + lose_count)
+        return result
+
+
 
     def get(self):
         heroes_id = request.args.get('ID').split(',')
         print("\nDEBUGGING **********************************")
 
+        print(f'heroes:{heroes_id}')
         winning_matches = self._find_matches_wins(heroes_id, True)
         losing_matches = self._find_matches_wins(heroes_id, False)
-        win_rate = self._calc_win_rate(heroes_id)
+        win_rate = self._calc_win_rate(heroes_id)['win_rate']
 
         print(f'winning:{winning_matches}')
         print(f'Losing:{losing_matches}')
@@ -86,7 +98,7 @@ class Recommendations(Resource):
 
 class RecommendationsWinRates(Resource):
     def get(self):
-        win_rates = WinRates.query.all()
+        win_rates = WinRates.query.order_by(WinRates.id).all()
         response_object = {
             'status' : 'success',
             'data' : {
