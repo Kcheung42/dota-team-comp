@@ -19,6 +19,20 @@ class App extends Component{
     /* this.getUsers(); */
   };
 
+
+  /* ID: this.state.selected.map((hero) => hero.id).join(',') */
+  update_suggestion = (e) => {
+    console.log(this.state.selected)
+    axios.get(process.env.REACT_APP_HEROES_SERVICE_URL + '/api/recommendations', {
+      params: {
+        ID: [...this.state.selected, e].map((hero) => hero.id).join(',')
+      }
+    }).then(response => {
+      this.setState({suggested: response.data.data.heroes});
+    })
+         .catch(error => {console.log(error);})
+  }
+
   onClick = (e) => {
     const selected = this.state.selected
     var exists = (array, e) => {
@@ -32,14 +46,7 @@ class App extends Component{
     }
     if (selected.length < 5 && exists(selected, e) === false){
       this.setState({selected: [...this.state.selected, e]})
-      axios.get(process.env.REACT_APP_HEROES_SERVICE_URL + '/api/recommendations', {
-        params: {
-          ID: "1,2,3,4"
-        }
-      }).then(response => {
-        this.setState({suggested: response.data.data.heroes});
-      })
-        .catch(error => {console.log(error);})
+      this.update_suggestion(e)
     };
   };
 
@@ -47,6 +54,7 @@ class App extends Component{
     const selected = this.state.selected
     if (selected.length > 0) {
       this.setState({selected: selected.filter((hero) => hero.id !== e['id'])})
+      this.update_suggestion(e)
     }
   };
 

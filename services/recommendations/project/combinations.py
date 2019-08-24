@@ -9,7 +9,7 @@ def combinations(n, heroes, result, cur_team, cur_idx):
         existing_combo = WinRates.query.filter_by(team=team).first()
         if existing_combo is None:
             db.session.add(WinRates(team=team))
-            # print("Team Comp#:{}".format(team))
+            print("Team Comp#:{}".format(int(team,2)))
             db.session.commit()
             # result.append(team)
             return 1
@@ -22,7 +22,7 @@ def combinations(n, heroes, result, cur_team, cur_idx):
             existing_combo = WinRates.query.filter_by(team=team).first()
             if existing_combo is None:
                 db.session.add(WinRates(team=team))
-                # print("Team Comp#:{}".format(team))
+                print("Team Comp#:{}".format(int(team,2)))
                 db.session.commit()
                 # result.append(team)
                 r += 1
@@ -43,6 +43,7 @@ def calc_combinations(sample):
 def store_compositions():
     heroes = Hero.query.all()
     heroes_id = [h.id for h in heroes]
+    heroes_id = range(1,11)
     print("Calculating combinaations for {} heroes ...".format(len(heroes_id)))
     count = calc_combinations(heroes_id)
     print("combinations:{} Successfully Added".format(count))

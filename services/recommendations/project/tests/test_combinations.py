@@ -28,7 +28,7 @@ class TestDeserialize(BaseTestCase):
         """Leading zeroes"""
         bit_string = '0001110'
         result = comp_deserialize(bit_string)
-        self.assertEqual("1,2,3", result)
+        self.assertEqual([1,2,3], result)
 
 if __name__ == '__main__':
     unittest.main()
