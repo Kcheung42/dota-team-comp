@@ -10,7 +10,8 @@ def combinations(n, heroes, result, cur_team, cur_idx):
         if existing_combo is None:
             db.session.add(WinRates(team=team))
             # print("Team Comp#:{}".format(team))
-            result.append(team)
+            db.session.commit()
+            # result.append(team)
             return 1
         else:
             return 0
@@ -22,7 +23,8 @@ def combinations(n, heroes, result, cur_team, cur_idx):
             if existing_combo is None:
                 db.session.add(WinRates(team=team))
                 # print("Team Comp#:{}".format(team))
-                result.append(team)
+                db.session.commit()
+                # result.append(team)
                 r += 1
         count = 1
         for i in range(cur_idx, len(heroes)):
@@ -34,14 +36,13 @@ def combinations(n, heroes, result, cur_team, cur_idx):
 def calc_combinations(sample):
     results = []
     count = combinations(5, sample, results, [], 0)
-    db.session.commit()
+    # db.session.commit()
     return count
 
 
 def store_compositions():
     heroes = Hero.query.all()
-    # heroes_id = [h.id for h in heroes]
-    heroes_id = range(1,20)
+    heroes_id = [h.id for h in heroes]
     print("Calculating combinaations for {} heroes ...".format(len(heroes_id)))
     count = calc_combinations(heroes_id)
     print("combinations:{} Successfully Added".format(count))
