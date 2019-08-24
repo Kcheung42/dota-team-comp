@@ -6,24 +6,24 @@ def comp_serialize(heroes):
         result = 0
         for h in heroes:
             result = result | (2**h)
-        return result
-    return -1
+        return '{0:b}'.format(result)
+    return "0"
 
-# example_comp = [1,2,5]
-# result = ids_to_bit_string(example_comp)
-# print('{0:b}'.format(result))
-# should return
-
-def comp_deserialize(n):
+def comp_deserialize(bit_string):
     """Given a number representing a teams composition
-    return an array of hero ids
+    return an array of hero id.fs
     """
+    n = int(bit_string, 2)
     i = 1
-    pos = 1
+    pos = 0
     team_ids = []
     while(n):
         if (n&1) == 1:
-            team_ids.append(str(pos))
+            team_ids.append(pos)
+            # if len(team_ids) == 0:
+            #     team_ids += str(pos)
+            # else:
+            #     team_ids += ',' + (str(pos))
         n = n >> 1
         pos += 1
     return team_ids
