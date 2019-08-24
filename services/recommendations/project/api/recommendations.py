@@ -103,7 +103,7 @@ class Recommendations(Resource):
 class RecommendationsWinRates(Resource):
     def get(self):
         win_rates = WinRates.query.order_by(WinRates.id).all()
-        win_rates = list(filter(lambda x: (x.win_count + x.lose_count) != 0, win_rates))
+        # win_rates = list(filter(lambda x: (x.win_count + x.lose_count) != 0, win_rates))
         response_object = {
             'status' : 'success',
             'data' : {

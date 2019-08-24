@@ -6,10 +6,10 @@ from project.api.models import Hero, WinRates
 def combinations(n, heroes, result, cur_team, cur_idx):
     if n == 0:
         team = comp_serialize(cur_team)
-        # print("Team Comp#:{}".format(team))
-        existing_comb = WinRates.query.filter_by(team=team).first()
-        if existing_comb is None:
+        existing_combo = WinRates.query.filter_by(team=team).first()
+        if existing_combo is None:
             db.session.add(WinRates(team=team))
+            # print("Team Comp#:{}".format(team))
             result.append(team)
             return 1
         else:
@@ -18,8 +18,8 @@ def combinations(n, heroes, result, cur_team, cur_idx):
         r = 0
         if len(cur_team) > 0:
             team = comp_serialize(cur_team)
-            existing_comb = WinRates.query.filter_by(team=team).first()
-            if existing_comb is None:
+            existing_combo = WinRates.query.filter_by(team=team).first()
+            if existing_combo is None:
                 db.session.add(WinRates(team=team))
                 # print("Team Comp#:{}".format(team))
                 result.append(team)
@@ -40,8 +40,8 @@ def calc_combinations(sample):
 
 def store_compositions():
     heroes = Hero.query.all()
-    heroes_id = [h.id for h in heroes]
+    # heroes_id = [h.id for h in heroes]
+    heroes_id = range(1,20)
     print("Calculating combinaations for {} heroes ...".format(len(heroes_id)))
-    # heroes_id = range(1,20)
     count = calc_combinations(heroes_id)
     print("combinations:{} Successfully Added".format(count))
