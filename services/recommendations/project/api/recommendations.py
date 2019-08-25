@@ -90,7 +90,7 @@ class RecommendationsWinRates(Resource):
 
 
 api.add_resource(Recommendations, '/api/recommendations')
-api.add_resource(RecommendationsWinRates, '/api/win_rates')
+# api.add_resource(RecommendationsWinRates, '/api/win_rates')
 api.add_resource(RecommendationsPing, '/api/ping')
 
 
