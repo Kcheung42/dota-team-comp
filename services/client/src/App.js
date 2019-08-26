@@ -45,18 +45,30 @@ class App extends Component{
       }, false)
     }
     if (selected.length < 5 && exists(selected, e) === false){
-      this.setState({selected: [...this.state.selected, e]},
-                    () => {this.update_suggestion()});
+      this.setState(
+        {selected: [...this.state.selected, e]},
+        () => {
+          if (this.state.selected.length == 5){
+            this.setState({suggested: []})
+          } else {
+            this.update_suggestion()
+          }
+        }
+      );
     };
   };
 
   onClickRemove = (e) => {
     const selected = this.state.selected
     if (selected.length > 0) {
-      this.setState({selected: selected.filter((hero) => hero.id !== e['id'])},
-                    () => {this.update_suggestion()
-                      if(this.state.selected.length == 0){
-                        this.setState({suggested: []})}});
+      this.setState(
+        {selected: selected.filter((hero) => hero.id !== e['id'])},
+        () => {this.update_suggestion()
+          if(this.state.selected.length == 0){
+            this.setState({suggested: []})
+          }
+        }
+      );
     }
   };
 

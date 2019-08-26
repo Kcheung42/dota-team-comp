@@ -32,7 +32,6 @@ class Recommendations(Resource):
             res.append(h)
         return res
 
-# TODO use max heap to build top 5 pick
     def get(self):
         response_object = {
             'status' : 'success',
@@ -46,6 +45,7 @@ class Recommendations(Resource):
         selected_id = [int(x) for x in params.split(',')]
         selected_heroes = [Hero.query.get(x) for x in selected_id]
         hero_list = Hero.query.all()
+# TODO use max heap to build top 5 pick
         top_results = []
         for h in hero_list:
             if h not in selected_heroes:
@@ -56,6 +56,8 @@ class Recommendations(Resource):
                 w = WinRates.query.filter_by(team=serialize_team).first()
                 if w:
                     top_results.append((w.win_rate, h))
+                else:
+                    top_results.append((0, h))
 
         if len(top_results) > 0:
             sorted(top_results, key=lambda x: x[0])
