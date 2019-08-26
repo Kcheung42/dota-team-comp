@@ -11,8 +11,11 @@ const HeroLabel = (props) =>{
 const HeroItem = (props) => {
 
   let text
-  const file_name = props.hero.id + '_sb.png'
-  const logo = require('../assets/' + file_name)
+  const small_name = props.hero.id + '_sb.png'
+  const small_img = require('../assets/' + small_name)
+
+  const large_name = props.hero.id + '_full.png'
+  const large_img = require('../assets/' + large_name)
 
   if (props.hero.win_rate != null){
     text = props.hero.name + " %"  + Number((props.hero.win_rate * 100).toFixed(1))
@@ -22,9 +25,13 @@ const HeroItem = (props) => {
 
   if (props.onClick){
     return (
-      <button onClick={() => props.onClick({'id' : props.hero.id,
+      <button className='Hero-button'
+              onClick={() => props.onClick({'id' : props.hero.id,
                                             'name' :props.hero.name})} >
-        <img alt="" src={logo}/>
+        <img alt=""
+             onMouseOver={e => e.currentTarget.src = large_img}
+             onMouseOut={e => e.currentTarget.src = small_img}
+             src={small_img}/>
       </button>)
   } else {
     return <h4>{props.hero.name}</h4>
@@ -32,3 +39,6 @@ const HeroItem = (props) => {
 };
 
 export default HeroItem;
+
+/* 
+ * onMouseOver={e => e.currentTarget.src = large_img} */
