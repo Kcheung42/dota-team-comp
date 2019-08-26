@@ -31,3 +31,22 @@
     transform: rotate(360deg);
   }
 }
+
+.compress {
+  width:20%
+}
+
+.image{
+  display:none;
+  position:absolute;
+}
+
+.h1 {
+  color: white;
+}
+
+.Hero-button{
+  padding: 0;
+  border: none;
+  background: none;
+}

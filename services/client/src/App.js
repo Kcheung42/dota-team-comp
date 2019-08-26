@@ -75,13 +75,13 @@ class App extends Component{
   render(){
     return (
       <div className="App">
-        <h1>Selected</h1>
+        <h1 className='h1'>Selected</h1>
         <HeroList heroes={this.state.selected}
                   onClick={this.onClickRemove}/>
-        <h1>Heroes</h1>
+        <h1 className='h1'>Heroes</h1>
         <HeroList heroes={this.state.heroes}
                   onClick={this.onClick}/>
-        <h1>Suggested</h1>
+        <h1 class='h1'>Suggested</h1>
         <HeroList heroes={this.state.suggested}
                   onClick={this.onClick}/>
       </div>
