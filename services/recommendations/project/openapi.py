@@ -17,6 +17,8 @@ def fetch_heroes():
     if response.status_code == 200:
         data = response.json()
         for d in data:
+            fetch_images(d['name'].replace('npc_dota_hero_', ''), d['id'], '_sb.png')
+            fetch_images(d['name'].replace('npc_dota_hero_', ''), d['id'], '_full.png')
             hero_id = d['id']
             hero = Hero.query.filter_by(id=hero_id).first()
             if not hero:
@@ -56,3 +58,16 @@ def fetch_matches():
                 match = add_match(d['match_id'], d['radiant_win'], d['radiant_team'], d['dire_team'])
                 db.session.commit()
                 print("match:{} Successfully Added".format(match.match_id), flush=True)
+
+
+def fetch_images(hero_name, id, suffix):
+    url = 'http://cdn.dota2.com/apps/dota2/images/heroes/'
+    final_url = url + hero_name + suffix
+    image_data = requests.get(final_url).content
+
+    file_dir = 'project/assets/'
+    file_name = str(id) + suffix
+    file_path = file_dir + file_name
+    print(f'image downloaded:{file_path}')
+    with open(file_path, 'wb') as handler:
+        handler.write(image_data)

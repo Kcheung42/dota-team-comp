@@ -62,12 +62,21 @@ class Recommendations(Resource):
             print(f'top_results:{top_results}')
             # top_results = top_results[::-1][:5]
             top_results = top_results[:5]
-            top_results = [x[1] for x in top_results]
             print(f'top_results:{top_results}')
-            response_object['data']['heroes'] = [h.to_json() for h in top_results]
+            data = []
+            for t in top_results:
+                hero_json = t[1].to_json()
+                hero_json.update({'win_rate': t[0]})
+                data.append(hero_json)
+            response_object['data']['heroes'] = data
         else:
+            data = []
             top_results = self.Rand(5)
-            response_object['data']['heroes'] = [h.to_json() for h in top_results]
+            for t in top_results:
+                hero_json = t.to_json()
+                hero_json.update({'win_rate': 0})
+                data.append(hero_json)
+            response_object['data']['heroes'] = data
 
         return response_object, 200
 

@@ -45,7 +45,7 @@ def calc_win_rates():
         t.win_rate = result['win_rate']
         t.win_count = result['win_count']
         t.lose_count = result['lose_count']
-        print("comb={} winrate={}".format(t.id, result['win_rate']))
+        print("comb#={} winrate={}".format(t.id, result['win_rate']))
         db.session.commit()
 
 # Runnin Times

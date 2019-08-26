@@ -14,6 +14,7 @@ def combinations(n, heroes, result, cur_team, cur_idx):
             # result.append(team)
             return 1
         else:
+            print(f'Already in Database:{team}')
             return 0
     else:
         r = 0
@@ -26,6 +27,8 @@ def combinations(n, heroes, result, cur_team, cur_idx):
                 db.session.commit()
                 # result.append(team)
                 r += 1
+            else:
+                print(f'Already in Database:{team}')
         count = 1
         for i in range(cur_idx, len(heroes)):
             r += combinations(n-1, heroes, result, cur_team+[heroes[i]], cur_idx + count)
@@ -43,7 +46,7 @@ def calc_combinations(sample):
 def store_compositions():
     heroes = Hero.query.all()
     heroes_id = [h.id for h in heroes]
-    heroes_id = range(1,11)
+    # heroes_id = range(1,20)
     print("Calculating combinaations for {} heroes ...".format(len(heroes_id)))
     count = calc_combinations(heroes_id)
     print("combinations:{} Successfully Added".format(count))

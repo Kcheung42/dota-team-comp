@@ -44,10 +44,9 @@ docker-compose -f docker-compose-prod.yml exec [container name] python manage.py
 
 # Visit:
 ### Application
-* http://ec2-35-170-79-72.compute-1.amazonaws.com/
+* http://ec2-100-25-246-192.compute-1.amazonaws.com/
 
 ### API
-* http://ec2-35-170-79-72.compute-1.amazonaws.com/users
-* http://ec2-35-170-79-72.compute-1.amazonaws.com/api/hereoes
-* http://ec2-35-170-79-72.compute-1.amazonaws.com/api/matches
-* http://ec2-35-170-79-72.compute-1.amazonaws.com//api/win_rates
+* http://ec2-100-25-246-192.compute-1.amazonaws.com/users
+* http://ec2-100-25-246-192.compute-1.amazonaws.com/heroes
+* http://ec2-100-25-246-192.compute-1.amazonaws.com/matches

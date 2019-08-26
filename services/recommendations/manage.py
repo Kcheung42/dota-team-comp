@@ -46,6 +46,7 @@ def calc_combinations():
 
 @cli.command('win_rates')
 def recalc_win_rates():
+    """Warning! Intensive Op: Calculates winrates for all Comp"""
     start = time.time()
     calc_win_rates()
     end = time.time()

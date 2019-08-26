@@ -19,18 +19,18 @@ class App extends Component{
     /* this.getUsers(); */
   };
 
+  /* ID: [...this.state.selected, e].map((hero) => hero.id).join(',') */
 
-  /* ID: this.state.selected.map((hero) => hero.id).join(',') */
-  update_suggestion = (e) => {
-    console.log(this.state.selected)
-    axios.get(process.env.REACT_APP_HEROES_SERVICE_URL + '/api/recommendations', {
-      params: {
-        ID: [...this.state.selected, e].map((hero) => hero.id).join(',')
-      }
-    }).then(response => {
-      this.setState({suggested: response.data.data.heroes});
-    })
-         .catch(error => {console.log(error);})
+  update_suggestion = () => {
+    if (this.state.selected.length > 0){
+      axios.get(process.env.REACT_APP_HEROES_SERVICE_URL + '/api/recommendations', {
+        params: {
+          ID: this.state.selected.map((hero) => hero.id).join(',')
+        }
+      }).then(response => {this.setState({suggested: response.data.data.heroes.sort((a,b) => {return b.win_rate - a.win_rate})});
+      })
+           .catch(error => {console.log(error);})
+    }
   }
 
   onClick = (e) => {
@@ -45,16 +45,18 @@ class App extends Component{
       }, false)
     }
     if (selected.length < 5 && exists(selected, e) === false){
-      this.setState({selected: [...this.state.selected, e]})
-      this.update_suggestion(e)
+      this.setState({selected: [...this.state.selected, e]},
+                    () => {this.update_suggestion()});
     };
   };
 
   onClickRemove = (e) => {
     const selected = this.state.selected
     if (selected.length > 0) {
-      this.setState({selected: selected.filter((hero) => hero.id !== e['id'])})
-      this.update_suggestion(e)
+      this.setState({selected: selected.filter((hero) => hero.id !== e['id'])},
+                    () => {this.update_suggestion()
+                      if(this.state.selected.length == 0){
+                        this.setState({suggested: []})}});
     }
   };
 
