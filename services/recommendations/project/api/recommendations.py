@@ -49,9 +49,7 @@ class Recommendations(Resource):
         top_results = []
         for h in hero_list:
             if h not in selected_heroes:
-                new_team = selected_heroes + [h]
-                team = [h.id for h in selected_heroes] + [h.id]
-                print(f'new_team:{team}')
+                team = selected_id + [h.id]
                 serialize_team = comp_serialize(team)
                 w = WinRates.query.filter_by(team=serialize_team).first()
                 if w:
@@ -60,11 +58,9 @@ class Recommendations(Resource):
                     top_results.append((0, h))
 
         if len(top_results) > 0:
-            sorted(top_results, key=lambda x: x[0])
-            print(f'top_results:{top_results}')
-            # top_results = top_results[::-1][:5]
-            top_results = top_results[:5]
-            print(f'top_results:{top_results}')
+            top_results = sorted(top_results, key=lambda x: x[0])
+            top_results = top_results[::-1][:5]
+            top_results = list(filter(lambda x: x[0] != 0, top_results))
             data = []
             for t in top_results:
                 hero_json = t[1].to_json()
@@ -94,14 +90,30 @@ class RecommendationsWinRates(Resource):
         }
         win_rates = WinRates.query.order_by(WinRates.id).all()
         if win_rates:
+            response_object['data']['count'] = len(win_rates)
+            response_object['data']['win_rates'] = [each.to_json() for each in win_rates]
+        return response_object, 200
+
+class CalculatedWinRates(Resource):
+    def get(self):
+        response_object = {
+            'status' : 'success',
+            'data' : {
+                'count' : 0,
+                'win_rates' : [],
+            }
+        }
+        win_rates = WinRates.query.order_by(WinRates.id).all()
+        if win_rates:
             win_rates = list(filter(lambda x: (x.win_count + x.lose_count) != 0, win_rates))
             response_object['data']['count'] = len(win_rates)
             response_object['data']['win_rates'] = [each.to_json() for each in win_rates]
         return response_object, 200
 
 
-api.add_resource(Recommendations, '/api/recommendations')
-# api.add_resource(RecommendationsWinRates, '/api/win_rates')
 api.add_resource(RecommendationsPing, '/api/ping')
+api.add_resource(Recommendations, '/api/recommendations')
+api.add_resource(RecommendationsWinRates, '/api/win_rates')
+api.add_resource(CalculatedWinRates, '/api/pos_win_rates')
 
 

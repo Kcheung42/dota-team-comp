@@ -27,7 +27,8 @@ class App extends Component{
         params: {
           ID: this.state.selected.map((hero) => hero.id).join(',')
         }
-      }).then(response => {this.setState({suggested: response.data.data.heroes.sort((a,b) => {return b.win_rate - a.win_rate})});
+      }).then(response => {
+        this.setState({suggested: response.data.data.heroes.sort((a,b) => {return b.win_rate - a.win_rate})}, () => {console.log(this.state.suggested)});
       })
            .catch(error => {console.log(error);})
     }
@@ -47,8 +48,9 @@ class App extends Component{
     if (selected.length < 5 && exists(selected, e) === false){
       this.setState(
         {selected: [...this.state.selected, e]},
+        /* After state is set */
         () => {
-          if (this.state.selected.length == 5){
+          if (this.state.selected.length === 5){
             this.setState({suggested: []})
           } else {
             this.update_suggestion()
@@ -63,9 +65,12 @@ class App extends Component{
     if (selected.length > 0) {
       this.setState(
         {selected: selected.filter((hero) => hero.id !== e['id'])},
-        () => {this.update_suggestion()
-          if(this.state.selected.length == 0){
+        /* After state is set */
+        () => {
+          if(this.state.selected.length === 0){
             this.setState({suggested: []})
+          }else{
+            this.update_suggestion()
           }
         }
       );
@@ -93,7 +98,7 @@ class App extends Component{
         <h1 className='h1'>Heroes</h1>
         <HeroList heroes={this.state.heroes}
                   onClick={this.onClick}/>
-        <h1 class='h1'>Suggested</h1>
+        <h1 className='h1'>Suggested</h1>
         <HeroList heroes={this.state.suggested}
                   onClick={this.onClick}/>
       </div>

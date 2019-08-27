@@ -2,6 +2,8 @@ import requests
 from project.api.models import Match, Hero, MatchHero
 from project import db
 from project.utility import add_hero, add_match
+import os
+from os import path
 
 base_url = 'https://api.opendota.com/api'
 api_key = '6ac234f2-0bfb-425e-abb1-8fe2fcf1d508'
@@ -28,23 +30,23 @@ def fetch_heroes():
                 # db.session.commit()
                 print("hero:{} Successfully Added".format(hero_id), flush=True)
 
+
 # TODO Not working
-def most_recent_match_id():
-    endpoint = '/explorer'
-    sql ='sql=select%20*%20from%20public_matches%20order%20by%20start_time%20desc%20limit%201'
-    url = f'{base_url}{endpoint}?sql={sql}'
-    response = requests.get(url)
-    print(response)
-    if response.status_code == 200:
-        data = response.json()
-        print(data)
-        return data[0]['match_id']
+# def most_recent_match_id():
+#     endpoint = '/explorer'
+#     sql ='sql=select%20*%20from%20public_matches%20order%20by%20start_time%20desc%20limit%201'
+#     url = f'{base_url}{endpoint}?sql={sql}'
+#     response = requests.get(url)
+#     print(response)
+#     if response.status_code == 200:
+#         data = response.json()
+#         print(data)
+#         return data[0]['match_id']
 
 
 def fetch_matches():
-    latest_match_id = most_recent_match_id()
-    # latest_match_id = 4982101905
-    print(f'latest_match_id:{latest_match_id}')
+    # latest_match_id = most_recent_match_id()
+    # print(f'latest_match_id:{latest_match_id}')
     endpoint = '/publicMatches'
     url = f'{base_url}{endpoint}?api_key={api_key}'
     response = requests.get(url)
@@ -61,13 +63,13 @@ def fetch_matches():
 
 
 def fetch_images(hero_name, id, suffix):
-    url = 'http://cdn.dota2.com/apps/dota2/images/heroes/'
-    final_url = url + hero_name + suffix
-    image_data = requests.get(final_url).content
-
     file_dir = 'project/assets/'
     file_name = str(id) + suffix
     file_path = file_dir + file_name
-    print(f'image downloaded:{file_path}')
-    with open(file_path, 'wb') as handler:
-        handler.write(image_data)
+    if not path.exists(file_path):
+        url = 'http://cdn.dota2.com/apps/dota2/images/heroes/'
+        final_url = url + hero_name + suffix
+        image_data = requests.get(final_url).content
+        print(f'downloading image:{file_path}')
+        with open(file_path, 'wb') as handler:
+            handler.write(image_data)

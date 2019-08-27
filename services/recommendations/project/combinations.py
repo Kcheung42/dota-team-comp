@@ -11,7 +11,6 @@ def combinations(n, heroes, result, cur_team, cur_idx):
             db.session.add(WinRates(team=team))
             print("Team Comp#:{}".format(int(team,2)))
             db.session.commit()
-            # result.append(team)
             return 1
         else:
             print(f'Already in Database:{team}')
@@ -25,7 +24,6 @@ def combinations(n, heroes, result, cur_team, cur_idx):
                 db.session.add(WinRates(team=team))
                 print("Team Comp#:{}".format(int(team,2)))
                 db.session.commit()
-                # result.append(team)
                 r += 1
             else:
                 print(f'Already in Database:{team}')
@@ -39,14 +37,20 @@ def combinations(n, heroes, result, cur_team, cur_idx):
 def calc_combinations(sample):
     results = []
     count = combinations(5, sample, results, [], 0)
-    # db.session.commit()
     return count
 
 
 def store_compositions():
     heroes = Hero.query.all()
-    heroes_id = [h.id for h in heroes]
-    # heroes_id = range(1,20)
-    print("Calculating combinaations for {} heroes ...".format(len(heroes_id)))
-    count = calc_combinations(heroes_id)
+
+    # for production:
+    # heroes_id = [h.id for h in heroes]
+    # print("Calculating combinaations for {} heroes ...".format(len(heroes_id)))
+    # calc_combinations(batch)
+
+    # for development
+    hero_batches = [range(i,i+19)for i in range(1,130,20)]
+    count = 0
+    for batch in hero_batches:
+        count += calc_combinations(batch)
     print("combinations:{} Successfully Added".format(count))
