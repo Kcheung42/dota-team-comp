@@ -46,6 +46,9 @@ def team_to_skip(team, to_skip):
 
 
 def calc_win_rates():
+    """For each Combination in the WinRates table,
+    Calculate the winarates.
+    """
     table = WinRates.query.all()
     to_skip = []
     for t in table:

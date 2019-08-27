@@ -21,8 +21,7 @@ class RecommendationsPing(Resource):
         }
 
 class Recommendations(Resource):
-
-    # TODO To Remove
+    # TODO To Remove once fully db fully populated
     def Rand(self, num):
         res = []
         heroes = Hero.query.all()
@@ -33,6 +32,9 @@ class Recommendations(Resource):
         return res
 
     def get(self):
+        """Given a list of Hero ids, return the top 5 heroes with
+        the highest win rate
+        """
         response_object = {
             'status' : 'success',
             'data' : {
