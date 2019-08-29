@@ -10,10 +10,9 @@ def combinations(n, heroes, result, cur_team, cur_idx):
         if existing_combo is None:
             db.session.add(WinRates(team=team))
             print("Team Comp#:{}".format(int(team,2)))
-            db.session.commit()
             return 1
         else:
-            print(f'Already in Database:{team}')
+            print(f'Already in Database:{cur_team}')
             return 0
     else:
         r = 0
@@ -23,10 +22,9 @@ def combinations(n, heroes, result, cur_team, cur_idx):
             if existing_combo is None:
                 db.session.add(WinRates(team=team))
                 print("Team Comp#:{}".format(int(team,2)))
-                db.session.commit()
                 r += 1
             else:
-                print(f'Already in Database:{team}')
+                print(f'Already in Database:{cur_team}')
         count = 1
         for i in range(cur_idx, len(heroes)):
             r += combinations(n-1, heroes, result, cur_team+[heroes[i]], cur_idx + count)
@@ -37,6 +35,7 @@ def combinations(n, heroes, result, cur_team, cur_idx):
 def calc_combinations(sample):
     results = []
     count = combinations(5, sample, results, [], 0)
+    db.session.commit()
     return count
 
 

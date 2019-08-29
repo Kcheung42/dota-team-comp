@@ -3,16 +3,30 @@
 ## Technologies Used
 
 #### Backend
-* Flask
+* Flask (Python)
 
 
 #### Frontend
-* ReactJs
+* React (Javascript)
 
 #### Devops
 * Docker
 * Docker-machine
 * Amazon AWS EC2
+
+# Development build
+1. Point environment to local
+
+```
+eval $(docker-machine env -u)
+export REACT_APP_HERO_S ERVICE_URL=localhost
+export REACT_APP_HERO_SERVICE_URL=localhost
+```
+2. Build and run container in background
+
+```
+make docker-build-up-dev
+```
 
 
 # Production build
@@ -32,11 +46,16 @@ export REACT_APP_HERO_SERVICE_URL=[ip address of amazon docker-machine instance]
 export REACT_APP_HERO_SERVICE_URL=[ip address of amazon docker-machine instance]
 ```
 
-2. Build and run container
+2. Build and run container in background
 ```
 make docker-build-up-dev
 ```
 3. Run Initial scripts
+Available scripts:
+* seed_db (will fetch hero and match data from opendota api)
+* test (run tests)
+* combo (calculate team all combinations)
+* win_rates (calculate win rates for combinations)
 ```
 docker-compose -f docker-compose-prod.yml exec [container name] python manage.py [cli]
 ```
@@ -44,9 +63,9 @@ docker-compose -f docker-compose-prod.yml exec [container name] python manage.py
 
 # Visit:
 ### Application
-* http://ec2-100-25-246-192.compute-1.amazonaws.com/
+* http://ec2-3-208-87-9.compute-1.amazonaws.com/
 
 ### API
-* http://ec2-100-25-246-192.compute-1.amazonaws.com/users
-* http://ec2-100-25-246-192.compute-1.amazonaws.com/heroes
-* http://ec2-100-25-246-192.compute-1.amazonaws.com/matches
+* http://ec2-3-208-87-9.compute-1.amazonaws.com/users
+* http://ec2-3-208-87-9.compute-1.amazonaws.com/heroes
+* http://ec2-3-208-87-9.compute-1.amazonaws.com/matches

@@ -49,9 +49,11 @@ def calc_win_rates():
     """For each Combination in the WinRates table,
     Calculate the winarates.
     """
-    table = WinRates.query.all()
+    count = db.session.query(WinRates.id).count()
+    print (count)
     to_skip = []
-    for t in table:
+    for t in db.session.query(WinRates).yield_per(1000):
+        print(f'calculating{t.id}')
         if not team_to_skip(int(t.team,2), to_skip):
             team = (comp_deserialize(t.team))
             result = _calc_win_rate(team)
@@ -60,8 +62,8 @@ def calc_win_rates():
             t.lose_count = result['lose_count']
             if result['win_count'] + result['lose_count'] == 0:
                 to_skip.append(int(t.team,2))
-            db.session.commit()
             print(f"comb#={team} win={result['win_count']} loss={result['lose_count']} winrate={result['win_rate']}")
+    db.session.commit()
 
 # Runnin Times
 # 1-20 Heroes Combinations: 1663 Combinations

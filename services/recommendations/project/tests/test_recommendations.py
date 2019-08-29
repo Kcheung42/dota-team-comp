@@ -21,17 +21,16 @@ class Test(BaseTestCase):
     def test_recommend_one_input(self):
         for i in range(1,11):
             add_hero(i, 'blahblahHero' + str(i))
-        add_match('1', True , '1,2', '3,4') # on winning team
-        add_match('2', False, '1,5', '3,2') # not same team
-        add_match('3', False, '3,5', '1,2') # on winning team
-        add_match('4', True, '1,2', '5,3') # on winning team
-        add_match('5', False, '1,2', '5,3') # on losing team
-        add_match('6', True, '1,3,2', '5,3') # on winning team
+        add_win_rate([1,2,3], .1, 1, 10)
+        add_win_rate([1,2,4], .2, 2, 10)
+        add_win_rate([1,2,5], .3, 3, 10)
+        add_win_rate([1,2,6], .4, 4, 10)
+        add_win_rate([1,2,7], .5, 5, 10)
+        add_win_rate([1,2,8], .6, 6, 10)
         with self.client:
             response = self.client.get('/api/recommendations?ID=1,2')
             data = json.loads(response.data.decode())['data']
-            self.assertEqual(data['heroes'], [])
-            self.assertEqual(data['params'], ['1','2'])
+            self.assertEqual(list(map(lambda x: x['id'], data['heroes'])), [8, 7, 6, 5, 4])
 
 if __name__ == '__main__':
     unittest.main()

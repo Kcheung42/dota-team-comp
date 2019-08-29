@@ -39,7 +39,6 @@ class Recommendations(Resource):
             'status' : 'success',
             'data' : {
                 'heroes' : [],
-                'params' : "",
             }
         }
 
@@ -80,7 +79,7 @@ class Recommendations(Resource):
 
         return response_object, 200
 
-
+# TODO querying all winRates Times out docker-machine, find fix
 class RecommendationsWinRates(Resource):
     def get(self):
         response_object = {
@@ -90,12 +89,14 @@ class RecommendationsWinRates(Resource):
                 'win_rates' : [],
             }
         }
-        win_rates = WinRates.query.order_by(WinRates.id).all()
+        # win_rates = WinRates.query.order_by(WinRates.id).all()
+        win_rates = None #TODO Remove
         if win_rates:
             response_object['data']['count'] = len(win_rates)
             response_object['data']['win_rates'] = [each.to_json() for each in win_rates]
         return response_object, 200
 
+# TODO querying all winRates Times out docker-machine, find fix
 class CalculatedWinRates(Resource):
     def get(self):
         response_object = {
@@ -105,7 +106,8 @@ class CalculatedWinRates(Resource):
                 'win_rates' : [],
             }
         }
-        win_rates = WinRates.query.order_by(WinRates.id).all()
+        # win_rates = WinRates.query.order_by(WinRates.id).all()
+        win_rates = None #TODO Remove
         if win_rates:
             win_rates = list(filter(lambda x: (x.win_count + x.lose_count) != 0, win_rates))
             response_object['data']['count'] = len(win_rates)
@@ -115,7 +117,7 @@ class CalculatedWinRates(Resource):
 
 api.add_resource(RecommendationsPing, '/api/ping')
 api.add_resource(Recommendations, '/api/recommendations')
-api.add_resource(RecommendationsWinRates, '/api/win_rates')
-api.add_resource(CalculatedWinRates, '/api/pos_win_rates')
+# api.add_resource(RecommendationsWinRates, '/api/win_rates')
+# api.add_resource(CalculatedWinRates, '/api/pos_win_rates')
 
 

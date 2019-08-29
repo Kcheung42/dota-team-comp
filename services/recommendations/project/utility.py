@@ -1,5 +1,6 @@
-from project.api.models import Match, Hero, MatchHero
+from project.api.models import Match, Hero, MatchHero, WinRates
 from project import db
+from project.serializer import comp_serialize
 
 def add_hero(id, name):
     hero = Hero(id=id, name=name)
@@ -25,4 +26,15 @@ def add_match(match_id, radiant_win, radiant_team, dire_team):
         win = False if radiant_win else True
         a = MatchHero(hero=hero, match=match, team='dire', win=win)
         db.session.add(a)
+    db.session.commit()
     return match
+
+def add_win_rate(team, win_rate, win_count, lose_count):
+    team = comp_serialize(team)
+    w = WinRates(team=team)
+    w.win_rate = win_rate
+    w.win_count = win_count
+    w.lose_count = lose_count
+    db.session.add(w)
+    db.session.commit()
+    return w
