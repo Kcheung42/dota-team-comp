@@ -66,6 +66,6 @@ docker-compose -f docker-compose-prod.yml exec [container name] python manage.py
 * http://ec2-3-208-87-9.compute-1.amazonaws.com/
 
 ### API
-* http://ec2-3-208-87-9.compute-1.amazonaws.com/users
-* http://ec2-3-208-87-9.compute-1.amazonaws.com/heroes
-* http://ec2-3-208-87-9.compute-1.amazonaws.com/matches
+* http://ec2-3-208-87-9.compute-1.amazonaws.com/api/users
+* http://ec2-3-208-87-9.compute-1.amazonaws.com/api/heroes
+* http://ec2-3-208-87-9.compute-1.amazonaws.com/api/matches
