@@ -19,7 +19,7 @@
 
 ```
 eval $(docker-machine env -u)
-export REACT_APP_HERO_S ERVICE_URL=localhost
+export REACT_APP_HERO_SERVICE_URL=localhost
 export REACT_APP_HERO_SERVICE_URL=localhost
 ```
 2. Build and run container in background

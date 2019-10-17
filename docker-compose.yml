@@ -16,7 +16,7 @@ services:
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
     depends_on:
       - users-db
-
+      
   users-db:
     build:
       context: ./services/users/project/db
