@@ -30,20 +30,23 @@ make docker-build-up-dev
 
 
 # Production build
+##### Note: Follow link to set up 
 
-1. Point environment to 
+
+1. Follow steps from https://docs.docker.com/machine/examples/aws/ to:
+ > 1. Sign up for AWS and configure credentials
+ > 2. Use Machine to create the instance
 
 
-To get ip of docker-machine instance
-```
-docker-machine ip [docker-machine name]
-```
+2. Log into aws docker-machine instance
 
 ```
 eval $(docker-machine env -dota)
-export 
 export REACT_APP_HERO_SERVICE_URL=[ip address of amazon docker-machine instance]
-export REACT_APP_HERO_SERVICE_URL=[ip address of amazon docker-machine instance]
+```
+##### Note: To get ip of docker-machine instance
+```
+docker-machine ip [docker-machine name]
 ```
 
 2. Build and run container in background
@@ -58,6 +61,11 @@ Available scripts:
 * win_rates (calculate win rates for combinations)
 ```
 docker-compose -f docker-compose-prod.yml exec [container name] python manage.py [cli]
+```
+
+4. Log off
+```
+eval $(docker-machine env -u)
 ```
 
 
