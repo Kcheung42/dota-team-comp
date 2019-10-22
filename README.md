@@ -41,7 +41,7 @@ make docker-build-up-dev
 2. Log into aws docker-machine instance
 
 ```
-eval $(docker-machine env -dota)
+eval $(docker-machine env dota)
 export REACT_APP_HERO_SERVICE_URL=[ip address of amazon docker-machine instance]
 ```
 ##### Note: To get ip of docker-machine instance

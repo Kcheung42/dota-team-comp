@@ -7,7 +7,6 @@ from sqlalchemy import exc
 users_blueprint = Blueprint('users', __name__)
 api = Api(users_blueprint)
 
-
 class UsersPing(Resource):
     def get(self):
         return {
@@ -47,7 +46,7 @@ class UsersList(Resource):
         post_data = request.get_json()
         response_object = {
             'status' : 'fail',
-           'message' : 'Invalid payload.'
+            'message' : 'Invalid payload.'
         }
         if not post_data:
             return response_object, 400

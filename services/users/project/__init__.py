@@ -1,12 +1,7 @@
 import os
 from flask import Flask
-from flask_restful import Resource, Api
+from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-
-
-
-# instantiate the db
-db = SQLAlchemy()
 
 # Update project/__init__.py, removing the route and model
 # and adding the Application Factory pattern:
@@ -15,6 +10,9 @@ db = SQLAlchemy()
 # why?
 # 1. Testing You can have instances of the application
 # 2. Multiple instances of in the same application process
+
+# instantiate the db
+db = SQLAlchemy()
 
 def create_app(script_info=None):
 
